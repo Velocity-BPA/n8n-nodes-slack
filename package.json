@@ -1,0 +1,47 @@
+{
+  "name": "n8n-nodes-slack",
+  "version": "1.0.0",
+  "description": "Slack integration for n8n",
+  "license": "BSL-1.1",
+  "homepage": "https://github.com/your-org/n8n-nodes-slack",
+  "author": {
+    "name": "Your Organization",
+    "email": "contact@yourorg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/n8n-nodes-slack.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials package.json",
+    "lintfix": "eslint nodes credentials package.json --fix",
+    "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js nodes credentials package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/SlackApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Slack/Slack.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.16",
+    "eslint": "^8.42.0",
+    "gulp": "^4.0.2",
+    "n8n-workflow": "*",
+    "prettier": "^2.8.8",
+    "typescript": "^5.1.3"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}

@@ -1,18 +1,4 @@
-/*
- * Business Source License 1.1
- *
- * Copyright (c) 2024 Your Organization
- *
- * Licensed under the Business Source License 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://mariadb.com/bsl11/
- */
-
 import {
-	IAuthenticateGeneric,
-	ICredentialTestRequest,
 	ICredentialType,
 	INodeProperties,
 } from 'n8n-workflow';
@@ -20,32 +6,43 @@ import {
 export class SlackApi implements ICredentialType {
 	name = 'slackApi';
 	displayName = 'Slack API';
-	documentationUrl = 'https://api.slack.com/';
+	documentationUrl = 'https://api.slack.com/authentication';
 	properties: INodeProperties[] = [
 		{
-			displayName: 'Bot User OAuth Token',
-			name: 'botToken',
+			displayName: 'Token Type',
+			name: 'tokenType',
+			type: 'options',
+			options: [
+				{
+					name: 'Bot Token',
+					value: 'bot',
+					description: 'Bot token for app integrations (xoxb-)',
+				},
+				{
+					name: 'User Token',
+					value: 'user',
+					description: 'User token for user actions (xoxp-)',
+				},
+			],
+			default: 'bot',
+		},
+		{
+			displayName: 'Token',
+			name: 'token',
 			type: 'string',
-			typeOptions: { password: true },
+			typeOptions: {
+				password: true,
+			},
 			default: '',
-			description: 'Bot User OAuth Token (starts with xoxb-)',
+			required: true,
+			description: 'The Slack bot token (xoxb-) or user token (xoxp-)',
+		},
+		{
+			displayName: 'API Base URL',
+			name: 'baseUrl',
+			type: 'string',
+			default: 'https://slack.com/api',
+			description: 'The base URL for Slack API',
 		},
 	];
-
-	authenticate: IAuthenticateGeneric = {
-		type: 'generic',
-		properties: {
-			headers: {
-				'Authorization': '=Bearer {{$credentials.botToken}}',
-			},
-		},
-	};
-
-	test: ICredentialTestRequest = {
-		request: {
-			baseURL: 'https://slack.com/api',
-			url: '/auth.test',
-			method: 'POST',
-		},
-	};
 }

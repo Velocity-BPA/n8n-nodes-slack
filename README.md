@@ -1,144 +1,271 @@
 # n8n-nodes-slack
 
-Slack integration for n8n - A comprehensive node for interacting with the Slack API.
+> **[Velocity BPA Licensing Notice]**
+>
+> This n8n node is licensed under the Business Source License 1.1 (BSL 1.1).
+>
+> Use of this node by for-profit organizations in production environments requires a commercial license from Velocity BPA.
+>
+> For licensing information, visit https://velobpa.com/licensing or contact licensing@velobpa.com.
+
+A comprehensive n8n community node for Slack integration that provides access to 8 core resources including channels, messages, users, files, reactions, stars, reminders, and user groups. This node enables complete Slack workspace automation with robust message management, file operations, and team collaboration features.
+
+![n8n Community Node](https://img.shields.io/badge/n8n-Community%20Node-blue)
+![License](https://img.shields.io/badge/license-BSL--1.1-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)
+![Slack API](https://img.shields.io/badge/Slack%20API-Web%20API-4A154B)
+![Real-time](https://img.shields.io/badge/Real--time-WebSocket-green)
+![Team Collaboration](https://img.shields.io/badge/Team-Collaboration-purple)
 
 ## Features
 
-- **Messages**: Create, read, update, delete, and list messages
-- **Channels**: Create, read, update, delete (archive), and list channels
-- **Users**: Get user information and list users
-- Full CRUD operations for supported resources
+- **Channel Management** - Create, update, archive channels and manage memberships across public and private channels
+- **Message Operations** - Send, update, delete messages with rich formatting, attachments, and threading support
+- **User Administration** - Retrieve user profiles, presence status, and manage user information across workspaces
+- **File Management** - Upload, download, share, and delete files with comprehensive metadata and permissions
+- **Reaction System** - Add, remove, and list emoji reactions on messages for enhanced communication
+- **Star Operations** - Manage starred items including messages, files, and channels for quick access
+- **Reminder Functionality** - Create, complete, and delete reminders for users and channels
+- **User Group Control** - Create, update, enable/disable user groups and manage group memberships
 
 ## Installation
 
 ### Community Nodes (Recommended)
 
-1. In n8n, go to Settings > Community Nodes
-2. Click "Install a community node"
-3. Enter: `n8n-nodes-slack`
-4. Click Install
+1. Open n8n
+2. Go to **Settings** → **Community Nodes**
+3. Click **Install a community node**
+4. Enter `n8n-nodes-slack`
+5. Click **Install**
 
 ### Manual Installation
 
-1. Navigate to your n8n installation directory
-2. Install the package:
-   bash
-   npm install n8n-nodes-slack
-   
-3. Restart n8n
+```bash
+cd ~/.n8n
+npm install n8n-nodes-slack
+```
 
-## Configuration
+### Development Installation
 
-### Slack App Setup
+```bash
+git clone https://github.com/Velocity-BPA/n8n-nodes-slack.git
+cd n8n-nodes-slack
+npm install
+npm run build
+mkdir -p ~/.n8n/custom
+ln -s $(pwd) ~/.n8n/custom/n8n-nodes-slack
+n8n start
+```
 
-1. Go to [Slack API Console](https://api.slack.com/apps)
-2. Create a new app or use an existing one
-3. Go to "OAuth & Permissions"
-4. Add the following Bot Token Scopes:
-   - `chat:write` - Send messages
-   - `chat:write.public` - Send messages to channels the bot isn't in
-   - `channels:read` - View basic information about public channels
-   - `channels:manage` - Manage public channels
-   - `channels:history` - View messages in public channels
-   - `groups:read` - View basic information about private channels
-   - `groups:history` - View messages in private channels
-   - `im:read` - View basic information about direct messages
-   - `im:history` - View messages in direct messages
-   - `mpim:read` - View basic information about group direct messages
-   - `mpim:history` - View messages in group direct messages
-5. Install the app to your workspace
-6. Copy the "Bot User OAuth Token" (starts with `xoxb-`)
+## Credentials Setup
 
-### n8n Credential Setup
+| Field | Description | Required |
+|-------|-------------|----------|
+| API Token | Slack Bot User OAuth Token (starts with `xoxb-`) | Yes |
+| Base URL | Slack API base URL (usually `https://slack.com/api`) | No |
 
-1. In n8n, create a new credential of type "Slack API"
-2. Paste your Bot User OAuth Token
-3. Test the connection
+## Resources & Operations
 
-## Usage
+### 1. Channel
 
-### Messages
+| Operation | Description |
+|-----------|-------------|
+| Create | Create a new public or private channel |
+| Get | Retrieve channel information and metadata |
+| Get Many | List channels with filtering options |
+| Update | Update channel name, topic, purpose, or settings |
+| Archive | Archive a channel to make it read-only |
+| Unarchive | Unarchive a previously archived channel |
+| Join | Join an existing channel |
+| Leave | Leave a channel |
+| Invite | Invite users to a channel |
+| Kick | Remove users from a channel |
+| Get Members | List all members of a channel |
 
-- **Create**: Send a message to a channel
-- **Get**: Retrieve a specific message by timestamp
-- **Get Many**: Retrieve multiple messages from a channel
-- **Update**: Edit an existing message
-- **Delete**: Delete a message
+### 2. Message
 
-### Channels
+| Operation | Description |
+|-----------|-------------|
+| Send | Send a message to a channel, user, or thread |
+| Update | Edit an existing message |
+| Delete | Delete a message |
+| Get | Retrieve a specific message |
+| Get Many | List messages from a channel with pagination |
+| Reply | Reply to a message in a thread |
+| Search | Search messages across channels |
+| Pin | Pin a message to a channel |
+| Unpin | Unpin a previously pinned message |
+| Get Replies | Get all replies to a threaded message |
 
-- **Create**: Create a new channel
-- **Get**: Get information about a specific channel
-- **Get Many**: List all channels
-- **Update**: Update channel information
-- **Archive**: Archive (delete) a channel
+### 3. User
 
-## Examples
+| Operation | Description |
+|-----------|-------------|
+| Get | Retrieve user profile information |
+| Get Many | List users in the workspace |
+| Get Presence | Check user's presence status |
+| Set Presence | Set your own presence status |
+| Get Profile | Get detailed user profile |
+| Update Profile | Update user profile fields |
+| List Conversations | Get user's channel and DM list |
+| Set Status | Set user status message and emoji |
+| Get Status | Get current user status |
 
-### Send a Message
+### 4. File
 
+| Operation | Description |
+|-----------|-------------|
+| Upload | Upload a file to Slack |
+| Get | Retrieve file information and metadata |
+| Get Many | List files with filtering options |
+| Delete | Delete a file from Slack |
+| Share | Share a file to channels or users |
+| Get Info | Get detailed file information |
+| Download | Download file content |
+| Set Public | Make a file publicly accessible |
+| Revoke Public | Revoke public access to a file |
+
+### 5. Reaction
+
+| Operation | Description |
+|-----------|-------------|
+| Add | Add an emoji reaction to a message |
+| Remove | Remove an emoji reaction |
+| Get | Get reactions for a specific message |
+| List | List all reactions by a user |
+
+### 6. Star
+
+| Operation | Description |
+|-----------|-------------|
+| Add | Star a message, file, or channel |
+| Remove | Remove a star from an item |
+| Get Many | List all starred items |
+
+### 7. Reminder
+
+| Operation | Description |
+|-----------|-------------|
+| Create | Create a reminder for yourself or others |
+| Get | Get information about a specific reminder |
+| Get Many | List all reminders |
+| Complete | Mark a reminder as complete |
+| Delete | Delete a reminder |
+
+### 8. User Group
+
+| Operation | Description |
+|-----------|-------------|
+| Create | Create a new user group |
+| Update | Update user group name or handle |
+| Get Many | List all user groups |
+| Enable | Enable a disabled user group |
+| Disable | Disable a user group |
+| Get Users | List users in a user group |
+| Update Users | Add or remove users from a group |
+
+## Usage Examples
+
+```javascript
+// Send a formatted message to a channel
 {
-  "resource": "message",
-  "operation": "create",
   "channel": "#general",
-  "text": "Hello from n8n!"
+  "text": "Hello team! 👋",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*Project Update*\nThe API integration is now complete!"
+      }
+    }
+  ]
 }
+```
 
-
-### Create a Channel
-
+```javascript
+// Upload a file and share it to multiple channels
 {
-  "resource": "channel",
-  "operation": "create",
-  "channelName": "my-new-channel"
+  "file": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+  "filename": "report.png",
+  "title": "Weekly Report",
+  "channels": ["#marketing", "#sales"],
+  "initial_comment": "Here's this week's performance report"
 }
+```
 
-
-### Get Messages from Channel
-
+```javascript
+// Create a reminder for a team member
 {
-  "resource": "message",
-  "operation": "getMany",
-  "channel": "#general",
-  "limit": 50
+  "text": "Review quarterly budget proposal",
+  "time": "2024-01-15T09:00:00Z",
+  "user": "U1234567890"
 }
+```
 
+```javascript
+// Search for messages containing specific keywords
+{
+  "query": "budget approval from:@john.doe in:#finance",
+  "sort": "timestamp",
+  "sort_dir": "desc",
+  "count": 20
+}
+```
 
-## Troubleshooting
+## Error Handling
 
-### Common Issues
+| Error | Description | Solution |
+|-------|-------------|----------|
+| `invalid_auth` | API token is invalid or expired | Verify token permissions and regenerate if necessary |
+| `channel_not_found` | Specified channel does not exist | Check channel name/ID and bot's channel access |
+| `not_in_channel` | Bot is not a member of the channel | Invite the bot to the channel first |
+| `file_not_found` | File ID does not exist or is inaccessible | Verify file ID and check file permissions |
+| `user_not_found` | User ID or username is invalid | Confirm user exists in workspace |
+| `rate_limited` | API rate limit exceeded | Implement exponential backoff and retry logic |
 
-1. **401 Unauthorized**: Check that your Bot Token is correct and starts with `xoxb-`
-2. **403 Forbidden**: Ensure your bot has the required scopes for the operation
-3. **Channel not found**: Use channel ID (C1234567890) instead of channel name for better reliability
-4. **Message not found**: Verify the message timestamp is correct and the message exists
+## Development
 
-### Debug Tips
+```bash
+npm install
+npm run build
+npm test
+npm run lint
+npm run dev
+```
 
-- Enable "Always Output Data" in the node settings to see error responses
-- Check the Slack API logs in your app settings
-- Use channel IDs instead of names when possible
+## Author
 
-## License
+**Velocity BPA**
+- Website: [velobpa.com](https://velobpa.com)
+- GitHub: [Velocity-BPA](https://github.com/Velocity-BPA)
 
-This project is licensed under the Business Source License 1.1.
+## Licensing
 
-**Business Source License 1.1**
+This n8n community node is licensed under the **Business Source License 1.1**.
 
-Copyright (c) 2024 Your Organization
+### Free Use
+Permitted for personal, educational, research, and internal business use.
 
-Licensed under the Business Source License 1.1 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at https://mariadb.com/bsl11/
+### Commercial Use
+Use of this node within any SaaS, PaaS, hosted platform, managed service, or paid automation offering requires a commercial license.
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+For licensing inquiries: **licensing@velobpa.com**
 
-## Support
-
-For issues and feature requests, please open an issue on the [GitHub repository](https://github.com/your-org/n8n-nodes-slack).
+See [LICENSE](LICENSE), [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md), and [LICENSING_FAQ.md](LICENSING_FAQ.md) for details.
 
 ## Contributing
 
-Contributions are welcome! Please read the contributing guidelines before submitting pull requests.
+Contributions are welcome! Please ensure:
 
----
+1. Code follows existing style conventions
+2. All tests pass (`npm test`)
+3. Linting passes (`npm run lint`)
+4. Documentation is updated for new features
+5. Commit messages are descriptive
 
-**Note**: This is a community node and is not officially maintained by n8n or Slack. Use at your own discretion.
+## Support
+
+- **Issues**: [GitHub Issues](https://github.com/Velocity-BPA/n8n-nodes-slack/issues)
+- **Slack API Documentation**: [https://api.slack.com/](https://api.slack.com/)
+- **Slack Community**: [https://slackcommunity.com/](https://slackcommunity.com/)
